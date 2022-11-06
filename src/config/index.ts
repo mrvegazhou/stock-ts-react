@@ -1,0 +1,1 @@
+export const baseUrl = `${location.protocol}//localhost:5000`;
