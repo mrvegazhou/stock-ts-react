@@ -2,6 +2,7 @@
 export interface AdminState {
 	userinfo: UserInfo;
 	powersCode: string[];
+	token: string;
 }
 
 // 用户数据类型
@@ -140,13 +141,16 @@ export interface UserBasicInfoParam {
 export interface AppUserInfo {
 	uuid?: number; // ID
 	username: string; // 用户名
+	email: string; //邮箱
 	phone?: string | number; // 手机
 	description?: string; // 描述
 	type: string;
 	status?: number; // 状态 1启用，-1禁用
+	create_time: string;
+	update_time: string;
+	delete_time: string;
 }
 
 // ./app.js的state类型
 export interface AppState {
-	
 }

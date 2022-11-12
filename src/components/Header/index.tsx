@@ -6,7 +6,7 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "antd";
-import { HomeOutlined, CalendarOutlined, DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, TeamOutlined, DownOutlined } from "@ant-design/icons";
 import logo from "@/assets/react.svg";
 
 // ==================
@@ -43,7 +43,7 @@ export default function HeaderCom(props: Props): JSX.Element {
 
 	const items = [
 		{ label: "首页", icon: <HomeOutlined />, key: "home" },
-		{ label: "2020年", icon: <CalendarOutlined />, key: "2020" },
+		{ label: "用户管理", icon: <TeamOutlined />, key: "appuser" },
 		{
 			label: (
 				<span>
@@ -55,6 +55,7 @@ export default function HeaderCom(props: Props): JSX.Element {
 			key: "auth",
 			children: [
 				{ label: "用户管理", key: "useradmin" },
+				{ label: "菜单角色管理", key: "menurole" },
 				{ label: "角色管理", key: "roleadmin" },
 				{ label: "权限管理", key: "poweradmin" },
 				{ label: "菜单管理", key: "menuadmin" },

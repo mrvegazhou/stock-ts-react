@@ -12,6 +12,7 @@ const defaultState: AdminState = {
 		userBasicInfo: null, // 用户的基础信息，id,用户名...
 	}, // 当前用户基本信息
 	powersCode: [], // 当前用户拥有的权限code列表(仅保留了code)，页面中的按钮的权限控制将根据此数据源判断
+	token: "",
 };
 
 export default {
@@ -43,6 +44,11 @@ export default {
 		async onLogin(params: { username: string; password: string }) {
 			try {
 				const res: Res = await axios.post(URL.LOGIN, params);
+				if (res?.code == 200) {
+					sessionStorage.setItem("admin_token", res.data.token);
+				} else {
+					message.error("登录失败!");
+				}
 				return res;
 			} catch (err) {
 				message.error("网络错误，请重试");
@@ -60,6 +66,7 @@ export default {
 				// 同 dispatch.admin.reducerLogout();
 				dispatch({ type: "app/reducerLogout", payload: null });
 				sessionStorage.removeItem("userinfo");
+				sessionStorage.removeItem("admin_token");
 				return "success";
 			} catch (err) {
 				message.error("网络错误，请重试");

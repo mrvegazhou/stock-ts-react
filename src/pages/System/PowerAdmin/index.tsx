@@ -88,9 +88,6 @@ function PowerAdminContainer() {
 
 	// 生命周期 - 首次加载组件时触发
 	useMount(() => {
-		if (userinfo.menus.length === 0) {
-			dispatch.sys.getMenus();
-		}
 		dispatch.sys.getAllRoles();
 		getData();
 	});
@@ -122,10 +119,10 @@ function PowerAdminContainer() {
 			// 第1次递归
 			kids = data.filter((item: Menu) => !item.parent);
 		} else {
-			kids = data.filter((item: Menu) => item.parent === one.id);
+			kids = data.filter((item: Menu) => item.parent === one.uuid);
 		}
 		kids.forEach((item: Menu) => (item.children = dataToJson(item, data)));
-		return kids.length ? kids : data;
+		return kids.length ? kids : null;
 	}, []);
 
 	// 点击树目录时触发
@@ -298,7 +295,7 @@ function PowerAdminContainer() {
 	 * 批量更新roles
 	 * @param id 当前这个权限的id
 	 * @param roleIds 选中的角色的id们，要把当前权限赋给这些角色
-	 *  **/
+	 **/
 	const setPowersByRoleIds = (id: number, role_ids: number[]) => {
 		const params = roles.map((item) => {
 			const powersTemp = new Set(item.menu_powers.reduce((a, b) => [...a, ...b.powers], []));
@@ -352,7 +349,7 @@ function PowerAdminContainer() {
 		d.sort((a, b) => {
 			return a.sorts - b.sorts;
 		});
-		return dataToJson(null, d) || [];
+		return dataToJson(null, d) || d;
 	}, [userinfo.menus, dataToJson]);
 
 	// 构建表格字段
@@ -510,7 +507,7 @@ function PowerAdminContainer() {
 						{...formItemLayout}
 						rules={[
 							{ required: true, whitespace: true, message: "必填" },
-							{ max: 12, message: "最多输入12位字符" },
+							{ max: 50, message: "最多输入50位字符" },
 						]}
 					>
 						<Input placeholder="请输入权限名" disabled={modal.operateType === "see"} />
@@ -521,7 +518,7 @@ function PowerAdminContainer() {
 						{...formItemLayout}
 						rules={[
 							{ required: true, whitespace: true, message: "必填" },
-							{ max: 12, message: "最多输入12位字符" },
+							{ max: 50, message: "最多输入50位字符" },
 						]}
 					>
 						<Input placeholder="请输入权限Code" disabled={modal.operateType === "see"} />

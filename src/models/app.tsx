@@ -27,11 +27,35 @@ export default {
 			return;
 		},
 		/**
-		 * 修改菜单
+		 * 修改app用户
 		 * **/
 		async upAppUserInfo(params: AppUserInfo) {
 			try {
 				const res: Res = await axios.post(URL.UPDATE_APP_USER_INFO, params);
+				return res;
+			} catch (err) {
+				message.error("网络错误，请重试");
+			}
+			return;
+		},
+		/**
+		 * 获取app用户
+		 * **/
+		async getAppUserInfo(params: { uuid: number }) {
+			try {
+				const res: Res = await axios.post(URL.APP_USER_INFO, params);
+				return res;
+			} catch (err) {
+				message.error("网络错误，请重试");
+			}
+			return;
+		},
+		/**
+		 * 删除app用户
+		 * **/
+		async delAppUser(params: { uuid: number }) {
+			try {
+				const res: Res = await axios.post(URL.DEL_APP_USER, params);
 				return res;
 			} catch (err) {
 				message.error("网络错误，请重试");

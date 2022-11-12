@@ -3,7 +3,7 @@
 // ==================
 // 所需的各种插件
 // ==================
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import tools from "@/utils/tools";
@@ -34,7 +34,6 @@ import "./index.less";
 const LoginContainer = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<Dispatch>();
-	// const p = useSelector((state: RootState) => state.admin.powersCode);
 
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState(false); // 是否正在登录中

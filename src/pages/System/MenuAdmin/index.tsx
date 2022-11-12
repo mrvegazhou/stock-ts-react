@@ -7,7 +7,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import { useSetState, useMount } from "react-use";
 import { useSelector, useDispatch } from "react-redux";
 import { Tree, Button, Table, Tooltip, Popconfirm, Modal, Form, Select, Input, InputNumber, message, Divider } from "antd";
-import { EyeOutlined, ToolOutlined, DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { EyeOutlined, ToolOutlined, DeleteOutlined, PlusCircleOutlined, createFromIconfontCN } from "@ant-design/icons";
 import { cloneDeep } from "lodash";
 
 // ==================
@@ -31,9 +31,17 @@ const formItemLayout = {
 };
 
 // ==================
+// icon声明
+// ==================
+const IconFont = createFromIconfontCN({
+	scriptUrl: "//at.alicdn.com/t/c/font_3687307_7r9xv50xosf.js",
+});
+
+// ==================
 // 类型声明
 // ==================
 import { TableRecordData, Menu, ModalType, operateType, MenuParam } from "./index.type";
+import { Res } from "@/models/index.type";
 import { RootState, Dispatch } from "@/store/index";
 
 // ==================
@@ -159,7 +167,7 @@ function MenuAdminContainer() {
 				title: values.formTitle,
 				url: values.formUrl,
 				icon: values.formIcon,
-				parent: Number(treeSelect.id) || null,
+				parent: Number(treeSelect.id) || 0,
 				sorts: values.formSorts,
 				description: values.formDesc,
 				status: values.formConditions,
@@ -169,14 +177,14 @@ function MenuAdminContainer() {
 			});
 			if (modal.operateType === "add") {
 				try {
-					const res = await dispatch.sys.addMenu(params);
+					const res: Res = await dispatch.sys.addMenu(params);
 					if (res && res.code === 200) {
 						message.success("添加成功");
 						getData();
 						onClose();
 						dispatch.admin.updateUserInfo();
 					} else {
-						message.error("添加失败");
+						message.error("添加失败:" + res?.msg);
 					}
 				} finally {
 					setModal({
@@ -419,12 +427,12 @@ function MenuAdminContainer() {
 					>
 						<Input placeholder="请输入菜单链接" disabled={modal.operateType === "see"} />
 					</Form.Item>
-					<Form.Item label="图标" name="formIcon" {...formItemLayout}>
-						<Select dropdownClassName="iconSelect" disabled={modal.operateType === "see"}>
+					<Form.Item label="图标" name="formIcon" {...formItemLayout} rules={[{ required: true, message: "icon不能为空" }]}>
+						<Select popupClassName="iconSelect" disabled={modal.operateType === "see"}>
 							{IconsData.map((item, index) => {
 								return (
 									<Option key={index} value={item}>
-										<Icon type={item} />
+										<IconFont type={item} />
 									</Option>
 								);
 							})}

@@ -1,4 +1,4 @@
-import { AdminUser } from "@/models/index.type";
+import { AppUserInfo } from "@/models/index.type";
 
 // 分页相关参数控制
 export type Page = {
@@ -8,7 +8,7 @@ export type Page = {
 };
 
 // 构建table所需数据
-export type TableRecordData = AdminUser & {
+export type TableRecordData = AppUserInfo & {
 	key: number;
 	serial: number;
 	control: number;

@@ -38,13 +38,12 @@ export default {
 		async getMenus(): Promise<Res> {
 			try {
 				const res: Res = await axios.post(URL.ALL_MENUS);
-				console.log(res, "--res.data--")
 				if (res && res.code === 200) {
 					dispatch.sys.reducerSetMenus(res.data);
 				}
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("获取菜单网络错误，请重试");
 			}
 			return;
 		},
@@ -58,7 +57,7 @@ export default {
 				const res: Res = await axios.post(URL.ADD_MENU, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("添加菜单网络错误，请重试");
 			}
 			return;
 		},
@@ -71,7 +70,7 @@ export default {
 				const res: Res = await axios.post(URL.UPDATE_MENU, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("修改菜单网络错误，请重试");
 			}
 			return;
 		},
@@ -83,7 +82,7 @@ export default {
 				const res: Res = await axios.post(URL.DEL_MENU, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("删除菜单网络错误，请重试");
 			}
 			return;
 		},
@@ -97,7 +96,7 @@ export default {
 				const res: Res = await axios.post(URL.MENU_POWERS_BY_POWER_IDS, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("查询权限网络错误，请重试");
 			}
 			return;
 		},
@@ -112,7 +111,7 @@ export default {
 				const res: Res = await axios.post(URL.ROLE_INFO, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("获取角色网络错误，请重试");
 			}
 			return;
 		},
@@ -126,33 +125,33 @@ export default {
 				const res: Res = await axios.post(URL.MENUS, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("获取菜单信息网络错误，请重试");
 			}
 			return;
 		},
 
 		/**
 		 * 条件分页查询用户列表
-		 * **/
+		 **/
 		async getUserList(params: { page_num: number; page_size: number; username?: string; status?: number }) {
 			try {
 				const res: Res = await axios.post(URL.USER_LIST, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("查询用户列表网络错误，请重试");
 			}
 			return;
 		},
 
 		/**
 		 * 删除用户
-		 * **/
+		 **/
 		async delUser(params: { uuid: number }) {
 			try {
 				const res: Res = await axios.post(URL.DEL_USER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("删除管理员网络错误，请重试");
 			}
 			return;
 		},
@@ -166,7 +165,7 @@ export default {
 				}
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("获取所有角色网络错误，请重试");
 			}
 			return;
 		},
@@ -179,7 +178,7 @@ export default {
 				const res: Res = await axios.post(URL.ADD_ADMIN_USER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("添加用户网络错误，请重试");
 			}
 			return;
 		},
@@ -192,7 +191,7 @@ export default {
 				const res: Res = await axios.post(URL.UPDATE_ADMIN_USER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("修改用户网络错误，请重试");
 			}
 			return;
 		},
@@ -209,7 +208,7 @@ export default {
 				}
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("获取菜单及权限网络错误，请重试");
 			}
 			return;
 		},
@@ -222,7 +221,8 @@ export default {
 				const res: Res = await axios.post(URL.SYS_ROLES, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				console.log(err, "---res---")
+				message.error("查询角色网络错误，请重试");
 			}
 			return;
 		},
@@ -235,7 +235,7 @@ export default {
 				const res: Res = await axios.post(URL.ADD_ROLE, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("添加角色网络错误，请重试");
 			}
 			return;
 		},
@@ -248,7 +248,7 @@ export default {
 				const res: Res = await axios.post(URL.UPDATE_ROLE, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("修改角色网络错误，请重试");
 			}
 			return;
 		},
@@ -261,7 +261,7 @@ export default {
 				const res: Res = await axios.post(URL.SET_POWERS_BY_ROLE_ID, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("指定角色菜单及权限网络错误，请重试");
 			}
 			return;
 		},
@@ -274,7 +274,7 @@ export default {
 				const res: Res = await axios.post(URL.DEL_ROLE, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("删除角色网络错误，请重试");
 			}
 			return;
 		},
@@ -288,7 +288,7 @@ export default {
 				const res: Res = await axios.post(URL.ASSIGN_ROLE, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("分配角色网络错误，请重试");
 			}
 			return;
 		},
@@ -301,7 +301,7 @@ export default {
 				const res: Res = await axios.post(URL.MENU_POWERS_BY_MENU_ID, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("查询权限网络错误，请重试");
 			}
 			return;
 		},
@@ -314,7 +314,7 @@ export default {
 				const res: Res = await axios.post(URL.ADD_POWER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("添加权限网络错误，请重试");
 			}
 			return;
 		},
@@ -334,7 +334,7 @@ export default {
 				const res: Res = await axios.post(URL.SET_POWERS_BY_ROLE_IDS, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("角色设置网络错误，请重试");
 			}
 			return;
 		},
@@ -347,7 +347,7 @@ export default {
 				const res: Res = await axios.post(URL.DEL_POWER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("删除权限网络错误，请重试");
 			}
 			return;
 		},
@@ -360,7 +360,7 @@ export default {
 				const res: Res = await axios.post(URL.UPDATE_POWER, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("修改权限网络错误，请重试");
 			}
 			return;
 		},
@@ -373,9 +373,22 @@ export default {
 				const res: Res = await axios.post(URL.UPDATE_ADMIN_PASSWORD, params);
 				return res;
 			} catch (err) {
-				message.error("网络错误，请重试");
+				message.error("修改密码网络错误，请重试");
 			}
 			return;
 		},
+
+		/**
+		 * 通过菜单给角色赋权限
+		 */
+		async upMenuRoles(params: { menu_id: number; role_ids: number[] }) {
+			try {
+				const res: Res = await axios.post(URL.SET_MENU_ROLES, params);
+				return res;
+			} catch (err) {
+				message.error("通过菜单给角色赋权限，网络错误，请重试");
+			}
+			return;
+		 },
 	}),
 };

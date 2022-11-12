@@ -74,6 +74,8 @@ function RouterCom(): JSX.Element {
 					<Route path="roleadmin" element={lazyLoad(lazy(() => import(`@/pages/System/RoleAdmin`)))} />
 					<Route path="poweradmin" element={lazyLoad(lazy(() => import(`@/pages/System/PowerAdmin`)))} />
 					<Route path="menuadmin" element={lazyLoad(lazy(() => import(`@/pages/System/MenuAdmin`)))} />
+					<Route path="menurole" element={lazyLoad(lazy(() => import(`@/pages/System/MenuRole`)))} />
+					<Route path="appUserList" element={lazyLoad(lazy(() => import(`@/pages/User/UserList`)))} />
 					<Route path="nopower" element={lazyLoad(lazy(() => import(`@/pages/ErrorPages/401`)))} />
 					<Route path="*" element={lazyLoad(lazy(() => import(`@/pages/ErrorPages/404`)))} />
 				</Route>

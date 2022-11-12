@@ -10,6 +10,11 @@ export const tabKeyRouterMap: { [x: string]: string } = {
 	menuadmin: "/admin/finance/menuadmin",
 	"/admin/finance/menuadmin": "menuadmin",
 	home: "home",
+	"/admin/finance/menurole": "menurole",
+	menurole: "/admin/finance/menurole",
+
+	"/admin/finance/appUserList": "appuser",
+	appuser: "/admin/finance/appUserList",
 };
 
 export class URL {
@@ -47,11 +52,13 @@ export class URL {
 	public static readonly SET_POWERS_BY_ROLE_ID = `${URL.BASE}setPowersByRoleId`;
 	public static readonly SET_POWERS_BY_ROLE_IDS = `${URL.BASE}setPowersByRoleIds`;
 	public static readonly DEL_ROLE = `${URL.BASE}delRole`;
+	public static readonly SET_MENU_ROLES = `${URL.BASE}setMenuRoles`;
 
 	//应用用户管理
-	public static readonly APP_USER_LIST = `${URL.BASE}getAppUserList`;
+	public static readonly APP_USER_LIST = `${URL.BASE}appUserList`;
 	public static readonly UPDATE_APP_USER_INFO = `${URL.BASE}updateAppUserInfo`;
-	
+	public static readonly APP_USER_INFO = `${URL.BASE}getAppUserInfo`;
+	public static readonly DEL_APP_USER = `${URL.BASE}delAppUser`;
 }
 
 export const PAGE_SIZE = 20;
