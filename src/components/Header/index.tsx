@@ -6,7 +6,7 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "antd";
-import { HomeOutlined, TeamOutlined, DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, TeamOutlined, DownOutlined, DatabaseOutlined, SettingOutlined } from "@ant-design/icons";
 import logo from "@/assets/react.svg";
 
 // ==================
@@ -47,11 +47,22 @@ export default function HeaderCom(props: Props): JSX.Element {
 		{
 			label: (
 				<span>
+					资源管理
+					<DownOutlined />
+				</span>
+			),
+			icon: <DatabaseOutlined />,
+			key: "Resource",
+			children: [{ label: "图片管理", key: "imgs" }],
+		},
+		{
+			label: (
+				<span>
 					权限管理
 					<DownOutlined />
 				</span>
 			),
-			icon: <HomeOutlined />,
+			icon: <SettingOutlined />,
 			key: "auth",
 			children: [
 				{ label: "用户管理", key: "useradmin" },

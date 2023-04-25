@@ -5,8 +5,9 @@
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSetState, useMount } from "react-use";
-import { Form, Button, Input, Table, message, Popconfirm, Modal, Tooltip, Divider, Select, InputNumber } from "antd";
-import { EyeOutlined, ToolOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { Form, Button, Input, Table, message, Popconfirm, Modal, Tooltip, Divider, Select, DatePicker } from "antd";
+import { EyeOutlined, ToolOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import type { DatePickerProps } from "antd/es/date-picker";
 
 import { PAGE_SIZE } from "@/constants/index";
 
@@ -65,47 +66,33 @@ function UserListContainer() {
 	});
 
 	useMount(() => {
-		getData(page);
+		onGetData(page);
 	});
 
 	// 搜索相关参数
 	const [searchInfo, setSearchInfo] = useSetState<SearchInfo>({
 		username: undefined, // 角色名
+		email: undefined,
+		phone: undefined,
 		status: undefined, // 状态
+		begin_date: undefined,
+		end_date: undefined,
+		type: undefined,
 	});
-
-	// 函数- 查询当前页面所需列表数据
-	const getData = async (page: { page_num: number; page_size: number }) => {
-		if (!powers.includes("appUser:query")) {
-			return;
-		}
-		const params = {
-			page_num: page.page_num,
-			page_size: page.page_size,
-			username: searchInfo.username,
-			status: searchInfo.status,
-		};
-		setLoading(true);
-		try {
-			const res: Res = await dispatch.app.getAppUserList(tools.clearNull(params));
-			if (res && res.code === 200) {
-				setData(res.data.list);
-				setPage({
-					total: res.data.total,
-					page_num: page.page_num,
-					page_size: page.page_size,
-				});
-			} else {
-				message.error(res?.msg ?? "获取失败");
-			}
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	// 搜索 - 名称输入框值改变时触发
 	const searchUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchInfo({ username: e.target.value });
+	};
+
+	// 搜索 - 邮箱输入框值改变时触发
+	const searchEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchInfo({ email: e.target.value });
+	};
+
+	// 搜索 - 邮箱输入框值改变时触发
+	const searchPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchInfo({ phone: e.target.value });
 	};
 
 	// 搜索 - 状态下拉框选择时触发
@@ -113,9 +100,13 @@ function UserListContainer() {
 		setSearchInfo({ status: v });
 	};
 
+	const searchTypeChange = (v: number) => {
+		setSearchInfo({ type: v });
+	};
+
 	// 搜索
 	const onSearch = () => {
-		getData(page);
+		onGetData(page);
 	};
 
 	/**
@@ -136,6 +127,7 @@ function UserListContainer() {
 			} else {
 				// 查看或修改，需设置表单各控件的值为当前所选中行的数据
 				form.setFieldsValue({
+					formUuid: data?.uuid,
 					formStatus: data?.status,
 					formUsername: data?.username,
 					formEmail: data?.email,
@@ -166,6 +158,7 @@ function UserListContainer() {
 				modalLoading: true,
 			});
 			const params: AppUserInfo = {
+				uuid: values.formUuid,
 				username: values.formUsername,
 				description: values.formDesc,
 				phone: values.formPhone,
@@ -180,8 +173,25 @@ function UserListContainer() {
 					const res: Res = await dispatch.app.upAppUserInfo(params);
 					if (res && res.code === 200) {
 						message.success("修改成功");
-						getData(page);
+						onGetData(page);
 						onClose();
+					}
+				} finally {
+					setModal({
+						modalLoading: false,
+					});
+				}
+			}
+			if (modal.operateType === "add") {
+				// 新增
+				try {
+					const res: Res | undefined = await dispatch.app.addAppUser(params);
+					if (res && res.code === 200) {
+						message.success("添加成功");
+						onGetData(page);
+						onClose();
+					} else {
+						message.error(res?.msg ?? "操作失败");
 					}
 				} finally {
 					setModal({
@@ -194,14 +204,48 @@ function UserListContainer() {
 		}
 	};
 
+	// 分页查询
+	const onGetData = async (page: { page_num: number; page_size: number }): Promise<void> => {
+		if (!powers.includes("appUser:query")) {
+			return;
+		}
+		const params = {
+			page_num: page.page_num,
+			page_size: page.page_size,
+			username: searchInfo.username,
+			status: searchInfo.status,
+			begin_date: searchInfo.begin_date,
+			end_date: searchInfo.end_date,
+			email: searchInfo.email,
+			phone: searchInfo.phone,
+			type: searchInfo.type,
+		};
+		setLoading(true);
+		try {
+			const res = await dispatch.app.getAppUserList(tools.clearNull(params));
+			if (res && res.code === 200) {
+				setData(res.data.list);
+				setPage({
+					page_num: page.page_num,
+					page_size: page.page_size,
+					total: res.data.total,
+				});
+			} else {
+				message.error(res?.msg ?? "数据获取失败");
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	// 删除某一条数据
 	const onDel = async (uuid: number) => {
 		setLoading(true);
 		try {
-			const res = await dispatch.app.delAppUser({ uuid });
+			const res = await dispatch.imgs.delAppImg({ uuid });
 			if (res && res.code === 200) {
 				message.success("删除成功");
-				getData(page);
+				onGetData(page);
 			} else {
 				message.error(res?.msg ?? "操作失败");
 			}
@@ -212,7 +256,7 @@ function UserListContainer() {
 
 	// 表单页码改变
 	const onTablePageChange = (page_num: number, page_size: number | undefined) => {
-		getData({ page_num, page_size: page_size || page.page_size });
+		onGetData({ page_num, page_size: page_size || page.page_size });
 	};
 
 	// 构建字段
@@ -255,12 +299,12 @@ function UserListContainer() {
 		{
 			title: "创建时间",
 			dataIndex: "create_time",
-			key: "email",
+			key: "create_time",
 		},
 		{
 			title: "修改时间",
 			dataIndex: "update_time",
-			key: "email",
+			key: "update_time",
 		},
 		{
 			title: "状态",
@@ -333,10 +377,32 @@ function UserListContainer() {
 		});
 	}, [page, data]);
 
+	const searchBeginDateChange = (value: DatePickerProps["value"]) => {
+		setSearchInfo({ begin_date: value?.format("YYYY-MM-DD HH:mm:ss") });
+	};
+
+	const searchEndDateChange = (value: DatePickerProps["value"]) => {
+		setSearchInfo({ end_date: value?.format("YYYY-MM-DD HH:mm:ss") });
+	};
+
 	return (
 		<div>
 			<div className="g-search">
-				{powers.includes("user:query") && (
+				<ul className="search-func">
+					<li>
+						<Button
+							type="primary"
+							icon={<PlusCircleOutlined />}
+							disabled={!powers.includes("appUser:add")}
+							onClick={() => onModalShow(null, "add")}
+						>
+							添加用户
+						</Button>
+					</li>
+				</ul>
+
+				<Divider type="vertical" />
+				{powers.includes("appUser:query") && (
 					<ul className="search-ul">
 						<li>
 							<Input placeholder="请输入角色名" onChange={searchUsernameChange} value={searchInfo.username} />
@@ -345,13 +411,37 @@ function UserListContainer() {
 							<Select
 								placeholder="请选择状态"
 								allowClear
-								style={{ width: "200px" }}
+								style={{ width: "120px" }}
 								onChange={searchStatusChange}
 								value={searchInfo.status}
 							>
 								<Option value={1}>启用</Option>
 								<Option value={-1}>禁用</Option>
 							</Select>
+						</li>
+						<li>
+							<Select
+								placeholder="请选择类型"
+								allowClear
+								style={{ width: "120px" }}
+								onChange={searchTypeChange}
+								value={searchInfo.type}
+							>
+								<Option value={1}>微信</Option>
+								<Option value={2}>其他app</Option>
+							</Select>
+						</li>
+						<li>
+							<Input placeholder="请输入邮箱" onChange={searchEmailChange} value={searchInfo.email} />
+						</li>
+						<li>
+							<Input placeholder="请输入手机号" onChange={searchPhoneChange} value={searchInfo.phone} />
+						</li>
+						<li>
+							<DatePicker showTime format="YYYY-MM-DD HH:mm" onOk={searchBeginDateChange} placeholder="注册开始时间" />
+						</li>
+						<li>
+							<DatePicker showTime format="YYYY-MM-DD HH:mm" onOk={searchEndDateChange} placeholder="注册结束时间" />
 						</li>
 						<li>
 							<Button type="primary" icon={<SearchOutlined />} onClick={onSearch}>
@@ -371,7 +461,7 @@ function UserListContainer() {
 						current: page.page_num,
 						pageSize: page.page_size,
 						showQuickJumper: true,
-						showTotal: (total, range) => `共 ${total} 条数据`,
+						showTotal: (total, range) => `共 ${total}条数据`,
 						onChange: (page, page_size) => onTablePageChange(page, page_size),
 					}}
 				/>
@@ -391,6 +481,9 @@ function UserListContainer() {
 						formConditions: 1,
 					}}
 				>
+					<Form.Item label="ID" name="formUuid">
+						<Input disabled={true} />
+					</Form.Item>
 					<Form.Item
 						label="用户名"
 						name="formUsername"
@@ -406,9 +499,9 @@ function UserListContainer() {
 						label="手机"
 						name="formPhone"
 						{...formItemLayout}
-						rules={[{ required: true, pattern: new RegExp(/^[1-9]\d*$/, "g"), message: "请输入手机号" }]}
+						rules={[{ required: true, pattern: /^[1][3-9][\d]{9}/, message: "请输入手机号" }]}
 					>
-						<InputNumber min={0} max={99999} style={{ width: "100%" }} disabled={modal.operateType === "see"} />
+						<Input style={{ width: "100%" }} disabled={modal.operateType === "see"} />
 					</Form.Item>
 					<Form.Item
 						label="邮箱"
@@ -422,7 +515,7 @@ function UserListContainer() {
 							},
 						]}
 					>
-						<InputNumber min={0} max={99999} style={{ width: "100%" }} disabled={modal.operateType === "see"} />
+						<Input style={{ width: "100%" }} disabled={modal.operateType === "see"} />
 					</Form.Item>
 					<Form.Item label="类型" name="formType" {...formItemLayout} rules={[{ required: true, message: "请选择类型" }]}>
 						<Select disabled={modal.operateType === "see"}>

@@ -73,10 +73,10 @@ const BasicLayoutCom = () => {
 		 * 检查当前用户是否有该路由页面的权限
 		 * 没有则跳转至401页
 		 * **/
-		if (checkRouterPower(location.pathname) || location.pathname == "/admin/finance/nopower") {
+		if (checkRouterPower(location.pathname) || location.pathname == "/admin/sys/nopower") {
 			return children;
 		} else {
-			return <Navigate to="/admin/finance/nopower" />;
+			return <Navigate to="/admin/sys/nopower" />;
 		}
 	};
 

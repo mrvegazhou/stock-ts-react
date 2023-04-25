@@ -106,6 +106,16 @@ export interface UserInfo {
 	powers: Power[]; // 拥有的所有权限对象
 }
 
+// 分页相关参数控制
+export type Page = {
+	page_num: number; // 当前页码
+	page_size: number; // 每页显示多少条
+	total: number; // 总共多少条数据
+};
+
+// 模态框打开的类型 see查看，add添加，up修改
+export type OperateType = "see" | "add" | "up";
+
 // 接口的返回值类型
 export type Res =
 	| {
@@ -139,16 +149,26 @@ export interface UserBasicInfoParam {
 
 // 应用用户的数据类型
 export interface AppUserInfo {
-	uuid?: number; // ID
+	uuid: number; // ID
 	username: string; // 用户名
 	email: string; //邮箱
-	phone?: string | number; // 手机
+	phone: string; // 手机
 	description?: string; // 描述
 	type: string;
-	status?: number; // 状态 1启用，-1禁用
+	status: number; // 状态 1启用，-1禁用
 	create_time: string;
 	update_time: string;
-	delete_time: string;
+	delete_time?: string;
+}
+
+// 图片资源
+export interface AppImgs {
+	uuid: number; // ID
+	tags: string;
+	url: string;
+	type: number;
+	create_time: string;
+	update_time: string;
 }
 
 // ./app.js的state类型

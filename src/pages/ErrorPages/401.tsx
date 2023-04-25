@@ -10,7 +10,7 @@ import "./index.less";
 export default function NoPowerContainer(): JSX.Element {
 	const navigate = useNavigate();
 	const gotoHome = (): void => {
-		navigate("/admin/finance/home");
+		navigate("/admin/sys/home");
 	};
 
 	return (

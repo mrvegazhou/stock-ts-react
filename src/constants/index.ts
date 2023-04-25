@@ -1,24 +1,38 @@
+import { appBaseUrl } from "@/config";
+
 export const LOADING_TIP = "页面加载中...";
 
 export const tabKeyRouterMap: { [x: string]: string } = {
-	"/admin/finance/useradmin": "useradmin",
-	useradmin: "/admin/finance/useradmin",
-	"/admin/finance/roleadmin": "roleadmin",
-	roleadmin: "/admin/finance/roleadmin",
-	poweradmin: "/admin/finance/poweradmin",
-	"/admin/finance/poweradmin": "poweradmin",
-	menuadmin: "/admin/finance/menuadmin",
-	"/admin/finance/menuadmin": "menuadmin",
-	home: "home",
-	"/admin/finance/menurole": "menurole",
-	menurole: "/admin/finance/menurole",
+	"/admin/sys/useradmin": "useradmin",
+	useradmin: "/admin/sys/useradmin",
 
-	"/admin/finance/appUserList": "appuser",
-	appuser: "/admin/finance/appUserList",
+	"/admin/sys/roleadmin": "roleadmin",
+	roleadmin: "/admin/sys/roleadmin",
+
+	poweradmin: "/admin/sys/poweradmin",
+	"/admin/sys/poweradmin": "poweradmin",
+
+	menuadmin: "/admin/sys/menuadmin",
+	"/admin/sys/menuadmin": "menuadmin",
+
+	home: "home",
+	"/admin/sys/home": "home",
+
+	"/admin/sys/menurole": "menurole",
+	menurole: "/admin/sys/menurole",
+
+	"/admin/sys/appUserList": "appuser",
+	appuser: "/admin/sys/appUserList",
+
+	resource: "/admin/sys/resource",
+	"/admin/sys/resource": "resource",
+
+	imgs: "/admin/sys/imgs",
+	"/admin/sys/imgs": "imgs",
 };
 
 export class URL {
-	private static readonly BASE = "/admin/finance/";
+	private static readonly BASE = "/admin/sys/";
 
 	//后台admin管理
 	public static readonly LOGIN = `${URL.BASE}login`;
@@ -59,7 +73,14 @@ export class URL {
 	public static readonly UPDATE_APP_USER_INFO = `${URL.BASE}updateAppUserInfo`;
 	public static readonly APP_USER_INFO = `${URL.BASE}getAppUserInfo`;
 	public static readonly DEL_APP_USER = `${URL.BASE}delAppUser`;
+	public static readonly ADD_APP_USER = `${URL.BASE}addAppUser`;
+
+	//图片资源管理
+	public static readonly APP_IMGS = `${URL.BASE}getAppImgs`;
+	public static readonly APP_UPDATE_IMG = `${URL.BASE}updateImg`;
+	public static readonly APP_DEL_IMG = `${URL.BASE}delImg`;
+	public static readonly APP_IMGS_URL = `${appBaseUrl}/static/page/img`;
 }
 
 export const PAGE_SIZE = 20;
-export const HOME_URL: string = "/admin/finance/home";
+export const HOME_URL: string = "/admin/sys/home";

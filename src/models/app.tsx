@@ -62,5 +62,17 @@ export default {
 			}
 			return;
 		},
+		/**
+		 * 添加app用户
+		 * **/
+		async addAppUser(params: AppUserInfo) {
+			try {
+				const res: Res = await axios.post(URL.ADD_APP_USER, params);
+				return res;
+			} catch (err) {
+				message.error("添加app用户网络错误，请重试");
+			}
+			return;
+		},
 	}),
 };

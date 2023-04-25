@@ -1,11 +1,6 @@
+import type { DatePickerProps } from "antd/es/date-picker";
 import { AppUserInfo } from "@/models/index.type";
-
-// 分页相关参数控制
-export type Page = {
-	page_num: number; // 当前页码
-	page_size: number; // 每页显示多少条
-	total: number; // 总共多少条数据
-};
+export type { Res, Page } from "@/models/index.type";
 
 // 构建table所需数据
 export type TableRecordData = AppUserInfo & {
@@ -28,5 +23,10 @@ export type ModalType = {
 // 搜索相关参数
 export type SearchInfo = {
 	username: string | undefined; // 用户名
+	email: string | undefined;
+	phone: string | undefined;
 	status: number | undefined; // 状态
+	begin_date: string | DatePickerProps["value"];
+	end_date: string | DatePickerProps["value"];
+	type: number | undefined;
 };
