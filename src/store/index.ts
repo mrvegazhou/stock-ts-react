@@ -3,15 +3,21 @@ import admin from "@/models/admin";
 import sys from "@/models/sys";
 import app from "@/models/app";
 import imgs from "@/models/imgs";
+import feedback from "@/models/feedback";
+import searchLog from "@/models/searchLog";
+import advertisement from "@/models/advertisement";
 
 export interface RootModel extends Models<RootModel> {
 	admin: typeof admin;
 	sys: typeof sys;
 	app: typeof app;
 	imgs: typeof imgs;
+	feedback: typeof feedback;
+	searchLog: typeof searchLog;
+	advertisement: typeof advertisement;
 }
 
-const rootModel: RootModel = { admin, sys, app, imgs };
+const rootModel: RootModel = { admin, sys, app, imgs, feedback, searchLog, advertisement };
 const store = init({
 	models: rootModel,
 });

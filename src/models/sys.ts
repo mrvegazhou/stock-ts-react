@@ -31,7 +31,7 @@ export default {
 			return { ...state, powerTreeData: payload };
 		},
 	},
-	effects: (dispatch: Dispatch) => ({
+	effects: (dispatch: any) => ({
 		/**
 		 * 获取所有菜单
 		 * **/
@@ -83,49 +83,6 @@ export default {
 				return res;
 			} catch (err) {
 				message.error("删除菜单网络错误，请重试");
-			}
-			return;
-		},
-
-		/**
-		 * 根据权限ID查询对应的权限数据
-		 * @param id 可以是一个数字也可以是一个数组
-		 * **/
-		async getPowerById(params: { power_ids: number | number[] }) {
-			try {
-				const res: Res = await axios.post(URL.MENU_POWERS_BY_POWER_IDS, params);
-				return res;
-			} catch (err) {
-				message.error("查询权限网络错误，请重试");
-			}
-			return;
-		},
-
-		/**
-		 * 通过角色ID查询对应的角色数据
-		 * @param id 可以是一个数字，也可以是一个数组
-		 * @return 返回值是数组
-		 * **/
-		async getRoleById(params: { role_ids: number | number[] }) {
-			try {
-				const res: Res = await axios.post(URL.ROLE_INFO, params);
-				return res;
-			} catch (err) {
-				message.error("获取角色网络错误，请重试");
-			}
-			return;
-		},
-
-		/**
-		 * 根据菜单ID获取对应的菜单信息
-		 * @param {number} id 可以是一个数字也可以是一个数组
-		 * **/
-		async getMenusById(params: { menu_ids: number | number[] }) {
-			try {
-				const res: Res = await axios.post(URL.MENUS, params);
-				return res;
-			} catch (err) {
-				message.error("获取菜单信息网络错误，请重试");
 			}
 			return;
 		},
@@ -325,13 +282,17 @@ export default {
 		 * */
 		async setPowersByRoleIds(
 			params: {
-				role_id: number;
-				menus: number[];
-				powers: number[];
+				role_id: number[];
+				menu_id: number;
+				power_id: number;
 			}[]
 		) {
 			try {
 				const res: Res = await axios.post(URL.SET_POWERS_BY_ROLE_IDS, params);
+				if (res?.code != 200) {
+					message.error(res?.msg);
+					return;
+				}
 				return res;
 			} catch (err) {
 				message.error("角色设置网络错误，请重试");

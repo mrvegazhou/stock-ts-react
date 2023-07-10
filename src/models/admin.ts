@@ -1,8 +1,9 @@
 import axios from "@/utils/api/axios";
-import { AdminState, UserInfo, Res, Role, MenuAndPower, Menu, Power } from "@/models/index.type";
-import { Dispatch, RootState } from "@/store/index";
+import { AdminState, UserInfo, Res, AdminRoleMenuPowers } from "@/models/index.type";
+import { RootState } from "@/store/index";
 import { URL } from "@/constants/index";
 import { message } from "antd";
+import tools from "@/utils/tools";
 
 const defaultState: AdminState = {
 	userinfo: {
@@ -36,7 +37,7 @@ export default {
 			};
 		},
 	},
-	effects: (dispatch: Dispatch) => ({
+	effects: (dispatch: any) => ({
 		/**
 		 * 登录
 		 * @param { username, password } params
@@ -83,49 +84,21 @@ export default {
 			return "success";
 		},
 
-		/** 修改了角色/菜单/权限信息后需要更新用户的roles,menus,powers数据 **/
-		async updateUserInfo(params: undefined, rootState: RootState): Promise<any> {
-			/** 2.重新查询角色信息 **/
-			const userinfo: UserInfo = rootState.admin.userinfo;
-			const res2: Res | undefined = await dispatch.sys.getRoleById({
-				role_ids: userinfo.roles.map((item) => item.uuid),
-			});
-			if (!res2 || res2.code !== 200) {
-				// 角色查询失败
-				return res2;
+		/**
+		 * 刷新用户权限 菜单 角色 信息
+		 */
+		async flushAdminRoleMenuPowers() {
+			try {
+				const res: Res | undefined = await axios.post(URL.ADMIN_ROLE_MENU_POWERS);
+				if (res?.code == 200) {
+					this.setUserInfo(res?.data);
+					sessionStorage.setItem("userinfo", tools.compile(JSON.stringify(res?.data)));
+				}
+				let data: AdminRoleMenuPowers = res?.data;
+				return data;
+			} catch (err) {
+				message.error("网络错误，请重试");
 			}
-
-			const roles: Role[] = res2.data.filter((item: Role) => item.status === 1);
-
-			/** 3.根据菜单id 获取菜单信息 **/
-			const menuAndPowers = roles.reduce((a, b) => [...a, ...b.menu_powers], [] as MenuAndPower[]);
-
-			const res3: Res | undefined = await dispatch.sys.getMenusById({
-				menu_ids: Array.from(new Set(menuAndPowers.map((item) => item.menu_id))),
-			});
-			if (!res3 || res3.code !== 200) {
-				// 查询菜单信息失败
-				return res3;
-			}
-
-			const menus: Menu[] = res3.data.filter((item: Menu) => item.status === 1);
-
-			/** 4.根据权限id，获取权限信息 **/
-			const res4: Res | undefined = await dispatch.sys.getPowerById({
-				power_ids: Array.from(new Set(menuAndPowers.reduce((a, b) => [...a, ...b.powers], [] as number[]))),
-			});
-
-			if (!res4 || res4.code !== 200) {
-				// 权限查询失败
-				return res4;
-			}
-			const powers: Power[] = res4.data.filter((item: Power) => item.status === 1);
-			this.setUserInfo({
-				...userinfo,
-				roles,
-				menus,
-				powers,
-			});
 			return;
 		},
 	}),

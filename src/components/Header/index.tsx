@@ -4,10 +4,12 @@
 // 第三方库
 // ==================
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu } from "antd";
+import { Menu, message } from "antd";
 import { HomeOutlined, TeamOutlined, DownOutlined, DatabaseOutlined, SettingOutlined } from "@ant-design/icons";
 import logo from "@/assets/react.svg";
+import _ from "lodash";
 
 // ==================
 // 自定义的东西
@@ -20,6 +22,7 @@ import AvatarIcon from "@/components/AvatarIcon";
 // ==================
 import { UserInfo } from "@/models/index.type";
 import { tabKeyRouterMap } from "@/constants";
+import { Dispatch } from "@/store/index";
 
 type Props = {
 	userinfo: UserInfo; // 用户信息
@@ -30,7 +33,11 @@ type Props = {
 export default function HeaderCom(props: Props): JSX.Element {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const selectedKey = tabKeyRouterMap[location.pathname];
+	const dispatch = useDispatch<Dispatch>();
+
+	const tabKeyRouterMap2 = _.invert(tabKeyRouterMap);
+	const selectedKey = tabKeyRouterMap2[location.pathname];
+
 	// 根据理由选中对应 menu 项
 	const defaultKey = [selectedKey];
 
@@ -41,9 +48,27 @@ export default function HeaderCom(props: Props): JSX.Element {
 		}
 	};
 
+	async function flushPowers() {
+		await dispatch.admin.flushAdminRoleMenuPowers();
+		message.info("已刷新");
+	};
+
 	const items = [
 		{ label: "首页", icon: <HomeOutlined />, key: "home" },
-		{ label: "用户管理", icon: <TeamOutlined />, key: "appuser" },
+		{
+			label: (
+				<span>
+					用户管理
+					<DownOutlined />
+				</span>
+			),
+			icon: <TeamOutlined />,
+			key: "Appuser",
+			children: [
+				{ label: "用户列表", key: "appuser" },
+				{ label: "反馈信息", key: "appfeedback" },
+			],
+		},
 		{
 			label: (
 				<span>
@@ -53,7 +78,11 @@ export default function HeaderCom(props: Props): JSX.Element {
 			),
 			icon: <DatabaseOutlined />,
 			key: "Resource",
-			children: [{ label: "图片管理", key: "imgs" }],
+			children: [
+				{ label: "图片管理", key: "imgs" },
+				{ label: "广告管理", key: "adList" },
+				{ label: "搜索日志管理", key: "searchLog" },
+			],
 		},
 		{
 			label: (
@@ -65,7 +94,7 @@ export default function HeaderCom(props: Props): JSX.Element {
 			icon: <SettingOutlined />,
 			key: "auth",
 			children: [
-				{ label: "用户管理", key: "useradmin" },
+				{ label: "管理员管理", key: "useradmin" },
 				{ label: "菜单角色管理", key: "menurole" },
 				{ label: "角色管理", key: "roleadmin" },
 				{ label: "权限管理", key: "poweradmin" },
@@ -90,7 +119,9 @@ export default function HeaderCom(props: Props): JSX.Element {
 				/>
 			</div>
 			<div className="stock-header-item">
-				<span className="stock-header-item-pv">累计查询</span>
+				<span className="stock-header-item-pv" onClick={flushPowers}>
+					刷新权限
+				</span>
 			</div>
 			<div className="header-ri">
 				<span className="username">{props.userinfo.userBasicInfo?.username}</span>

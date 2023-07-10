@@ -4,7 +4,6 @@
  **/
 import axios from "@/utils/api/axios";
 import { message } from "antd";
-import { Dispatch } from "@/store/index";
 import { AppState, Res, AppUserInfo } from "./index.type";
 import { URL } from "@/constants/index";
 
@@ -13,7 +12,7 @@ const defaultState: AppState = {};
 export default {
 	state: defaultState,
 	reducers: {},
-	effects: (dispatch: Dispatch) => ({
+	effects: () => ({
 		/**
 		 * 条件分页查询应用用户列表
 		 * **/

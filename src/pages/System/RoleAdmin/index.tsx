@@ -205,7 +205,7 @@ function RoleAdminContainer() {
 					if (res && res.code === 200) {
 						message.success("添加成功");
 						getData(page);
-						dispatch.admin.updateUserInfo(); // 角色信息有变化，立即更新当前用户信息
+						dispatch.admin.flushAdminRoleMenuPowers(); // 角色信息有变化，立即更新当前用户信息
 						onClose();
 					}
 				} finally {
@@ -221,7 +221,7 @@ function RoleAdminContainer() {
 					if (res && res.code === 200) {
 						message.success("修改成功");
 						getData(page);
-						dispatch.admin.updateUserInfo();
+						dispatch.admin.flushAdminRoleMenuPowers();
 						onClose();
 					}
 				} finally {
@@ -243,7 +243,7 @@ function RoleAdminContainer() {
 			if (res && res.code === 200) {
 				message.success("删除成功");
 				getData(page);
-				dispatch.admin.updateUserInfo();
+				dispatch.admin.flushAdminRoleMenuPowers();
 			} else {
 				message.error(res?.msg ?? "操作失败");
 			}
@@ -281,7 +281,7 @@ function RoleAdminContainer() {
 			const res: Res = await dispatch.sys.setPowersByRoleId(params);
 			if (res && res.code === 200) {
 				getData(page);
-				dispatch.admin.updateUserInfo();
+				dispatch.admin.flushAdminRoleMenuPowers();
 				onPowerTreeClose();
 			} else {
 				message.error(res?.msg ?? "权限分配失败");

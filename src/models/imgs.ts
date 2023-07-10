@@ -1,6 +1,5 @@
 import axios from "@/utils/api/axios";
 import { Res, AppState } from "@/models/index.type";
-import { Dispatch, RootState } from "@/store/index";
 import { URL } from "@/constants/index";
 import { message } from "antd";
 
@@ -9,7 +8,7 @@ const defaultState: AppState = {};
 export default {
 	state: defaultState,
 	reducers: {},
-	effects: (dispatch: Dispatch) => ({
+	effects: () => ({
 		/**
 		 * 图片资源列表
 		 */
@@ -43,6 +42,6 @@ export default {
 				message.error("删除图片资源的网络错误，请重试");
 			}
 			return;
-		}
+		},
 	}),
 };

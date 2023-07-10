@@ -20,7 +20,7 @@ import LogoImg from "@/assets/logo.png";
 // 类型声明
 // ==================
 import { Dispatch } from "@/store/index";
-import { Role, Menu, Power, UserBasicInfo, Res } from "@/models/index.type";
+import { Role, Menu, Power, UserBasicInfo, Res, AdminRoleMenuPowers } from "@/models/index.type";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 // ==================
@@ -68,10 +68,6 @@ const LoginContainer = () => {
 	const loginIn = useCallback(
 		async (username: string, password: string) => {
 			let userBasicInfo: UserBasicInfo | null = null;
-			let roles: Role[] = [];
-			let menus: Menu[] = [];
-			let powers: Power[] = [];
-
 			/** 1.登录 （返回信息中有该用户拥有的角色id） **/
 			const res1: Res | undefined = await dispatch.admin.onLogin({
 				username,
@@ -79,52 +75,21 @@ const LoginContainer = () => {
 			});
 			if (!res1 || res1.code !== 200 || !res1.data) {
 				// 登录失败
+				message.error("登录失败");
 				return res1;
 			}
-
 			userBasicInfo = res1.data;
 
-			/** 2.根据角色id获取角色信息 (角色信息中有该角色拥有的菜单id和权限id) **/
-			const res2 = await dispatch.sys.getRoleById({
-				role_ids: (userBasicInfo as UserBasicInfo).roles,
-			});
-			if (!res2 || res2.code !== 200) {
-				// 角色查询失败
-				return res2;
-			}
-			try {
-				roles = res2.data.filter((item: Role) => item.status === 1); // status: 1启用 -1禁用
-			} catch (error) {
-				message.error("登录失败");
-			}
-
-			/** 3.根据菜单id 获取菜单信息 **/
-			const menuAndPowers = roles.reduce((a: any, b: any) => [...a, ...b.menu_powers], []);
-			const res3 = await dispatch.sys.getMenusById({
-				menu_ids: Array.from(new Set(menuAndPowers.map((item) => item.menu_id))),
-			});
-
-			if (!res3 || res3.code !== 200) {
-				// 查询菜单信息失败
-				return res3;
-			}
-
-			try {
-				menus = res3.data.filter((item: Menu) => item.status === 1);
-			} catch (error) {
-				message.error("登录失败");
-			}
-
-			/** 4.根据权限id，获取权限信息 **/
-			const res4 = await dispatch.sys.getPowerById({
-				power_ids: Array.from(new Set(menuAndPowers.reduce((a, b) => [...a, ...b.powers], []))),
-			});
-			if (!res4 || res4.code !== 200) {
-				// 权限查询失败
-				return res4;
-			}
-			powers = res4.data.filter((item: Power) => item.status === 1);
-			return { code: 200, data: { userBasicInfo, roles, menus, powers } };
+			let adminRoleMenuPowers: AdminRoleMenuPowers | undefined = await dispatch.admin.flushAdminRoleMenuPowers();
+			return {
+				code: 200,
+				data: {
+					userBasicInfo: userBasicInfo,
+					roles: adminRoleMenuPowers!.roles,
+					menus: adminRoleMenuPowers!.menus,
+					powers: adminRoleMenuPowers!.powers,
+				},
+			};
 		},
 		[dispatch.sys, dispatch.admin]
 	);

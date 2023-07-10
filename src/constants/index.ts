@@ -3,32 +3,18 @@ import { appBaseUrl } from "@/config";
 export const LOADING_TIP = "页面加载中...";
 
 export const tabKeyRouterMap: { [x: string]: string } = {
-	"/admin/sys/useradmin": "useradmin",
 	useradmin: "/admin/sys/useradmin",
-
-	"/admin/sys/roleadmin": "roleadmin",
 	roleadmin: "/admin/sys/roleadmin",
-
 	poweradmin: "/admin/sys/poweradmin",
-	"/admin/sys/poweradmin": "poweradmin",
-
 	menuadmin: "/admin/sys/menuadmin",
-	"/admin/sys/menuadmin": "menuadmin",
-
-	home: "home",
-	"/admin/sys/home": "home",
-
-	"/admin/sys/menurole": "menurole",
+	home: "/admin/sys/home",
 	menurole: "/admin/sys/menurole",
-
-	"/admin/sys/appUserList": "appuser",
 	appuser: "/admin/sys/appUserList",
-
 	resource: "/admin/sys/resource",
-	"/admin/sys/resource": "resource",
-
 	imgs: "/admin/sys/imgs",
-	"/admin/sys/imgs": "imgs",
+	searchLog: "/admin/sys/getSearchLogList",
+	appfeedback: "/admin/sys/getFeedbackList",
+	adList: "/admin/sys/getAdList",
 };
 
 export class URL {
@@ -37,13 +23,13 @@ export class URL {
 	//后台admin管理
 	public static readonly LOGIN = `${URL.BASE}login`;
 	public static readonly LOGOUT = `${URL.BASE}logout`;
+	public static readonly ADMIN_ROLE_MENU_POWERS = `${URL.BASE}getAdminRoleMenuPowers`;
 	public static readonly USER_LIST = `${URL.BASE}userList`;
 	public static readonly ADD_ADMIN_USER = `${URL.BASE}addAdminUser`;
 	public static readonly UPDATE_ADMIN_USER = `${URL.BASE}updateAdminUser`;
 	public static readonly UPDATE_ADMIN_PASSWORD = `${URL.BASE}updateAdminPassword`;
 	public static readonly DEL_USER = `${URL.BASE}delAdminUser`;
 
-	public static readonly MENUS = `${URL.BASE}menusByIds`;
 	public static readonly ALL_MENUS = `${URL.BASE}allMenus`;
 	public static readonly ADD_MENU = `${URL.BASE}addMenu`;
 	public static readonly UPDATE_MENU = `${URL.BASE}updateMenu`;
@@ -53,7 +39,6 @@ export class URL {
 	public static readonly UPDATE_POWER = `${URL.BASE}updatePower`;
 	public static readonly DEL_POWER = `${URL.BASE}delPower`;
 	public static readonly MENU_POWERS = `${URL.BASE}menuPowers`;
-	public static readonly MENU_POWERS_BY_POWER_IDS = `${URL.BASE}menuPowersByPowerIds`;
 	public static readonly MENU_POWERS_BY_MENU_ID = `${URL.BASE}menuPowersByMenuId`;
 	public static readonly ALL_ROLES_MENU_POWERS = `${URL.BASE}allRolesMenuPowers`;
 
@@ -61,7 +46,6 @@ export class URL {
 	public static readonly SYS_ROLES = `${URL.BASE}sysRoles`;
 	public static readonly ADD_ROLE = `${URL.BASE}addRole`;
 	public static readonly UPDATE_ROLE = `${URL.BASE}updateRole`;
-	public static readonly ROLE_INFO = `${URL.BASE}roleMenuPowers`;
 	public static readonly ASSIGN_ROLE = `${URL.BASE}assignRole`;
 	public static readonly SET_POWERS_BY_ROLE_ID = `${URL.BASE}setPowersByRoleId`;
 	public static readonly SET_POWERS_BY_ROLE_IDS = `${URL.BASE}setPowersByRoleIds`;
@@ -80,6 +64,15 @@ export class URL {
 	public static readonly APP_UPDATE_IMG = `${URL.BASE}updateImg`;
 	public static readonly APP_DEL_IMG = `${URL.BASE}delImg`;
 	public static readonly APP_IMGS_URL = `${appBaseUrl}/static/page/img`;
+
+	//反馈管理
+	public static readonly APP_FEEDBACKS = `${URL.BASE}getFeedbackList`;
+	public static readonly APP_DEL_FEEDBACK = `${URL.BASE}delFeedback`;
+	public static readonly APP_REPLY_FEEDBACK = `${URL.BASE}replyFeedback`;
+	public static readonly APP_REPLY_FEEDBACK_LIST = `${URL.BASE}replyFeedbackList`;
+
+	//搜索日志管理
+	public static readonly APP_SEARCH_LOG_LIST = `${URL.BASE}getSearchLogList`;
 }
 
 export const PAGE_SIZE = 20;

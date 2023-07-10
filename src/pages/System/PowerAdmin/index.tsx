@@ -221,8 +221,11 @@ function PowerAdminContainer() {
 						message.success("添加成功");
 						getData(treeSelect.id);
 						onClose();
-						await setPowersByRoleIds(res.data, rolesCheckboxChose);
-						dispatch.admin.updateUserInfo();
+						let powersParam: any = { role_ids: rolesCheckboxChose, menu_id: treeSelect.id, power_id: params.uuid };
+						await dispatch.sys.setPowersByRoleIds(powersParam);
+
+						dispatch.admin.flushAdminRoleMenuPowers();
+
 						dispatch.sys.getAllRoles();
 						const data = modal.nowData;
 						setRolesCheckboxChose(
@@ -254,13 +257,15 @@ function PowerAdminContainer() {
 						return;
 					}
 					params.uuid = modal.nowData.uuid;
-
+					// 修改操作权限信息
 					const res: Res = await dispatch.sys.upPower(params);
 					if (res && res.code === 200) {
 						message.success("修改成功");
-						getData(treeSelect.id);
+						// getData(treeSelect.id);
 						onClose();
-						await setPowersByRoleIds(params.uuid, rolesCheckboxChose);
+						let powersParam: any = { role_ids: rolesCheckboxChose, menu_id: treeSelect.id, power_id: params.uuid };
+						await dispatch.sys.setPowersByRoleIds(powersParam);
+
 						dispatch.sys.getAllRoles();
 						const data = modal.nowData;
 						setRolesCheckboxChose(
@@ -276,7 +281,7 @@ function PowerAdminContainer() {
 										.map((item) => item.uuid)
 								: []
 						);
-						dispatch.admin.updateUserInfo();
+						dispatch.admin.flushAdminRoleMenuPowers();
 					} else {
 						message.error("修改失败");
 					}
@@ -291,37 +296,6 @@ function PowerAdminContainer() {
 		}
 	};
 
-	/**
-	 * 批量更新roles
-	 * @param id 当前这个权限的id
-	 * @param roleIds 选中的角色的id们，要把当前权限赋给这些角色
-	 **/
-	const setPowersByRoleIds = (id: number, role_ids: number[]) => {
-		const params = roles.map((item) => {
-			const powersTemp = new Set(item.menu_powers.reduce((a, b) => [...a, ...b.powers], []));
-			if (role_ids.includes(item.uuid)) {
-				powersTemp.add(id);
-			} else {
-				powersTemp.delete(id);
-			}
-			const powers: number[] = Array.from(powersTemp);
-			let menus: number[] = item.menu_powers.map((item) => item.menu_id);
-
-			if (menus.length == 0 && powers.length != 0) {
-				menus.push(Number(treeSelect.id));
-			}
-			if (powers.length == 0) {
-				menus = [];
-			}
-			return {
-				role_id: item.uuid,
-				menus: menus,
-				powers: powers,
-			};
-		});
-		dispatch.sys.setPowersByRoleIds(params);
-	};
-
 	// 删除一条数据
 	const onDel = async (record: TableRecordData) => {
 		const params = { uuid: record.uuid };
@@ -329,7 +303,7 @@ function PowerAdminContainer() {
 		const res = await dispatch.sys.delPower(params);
 		if (res && res.code === 200) {
 			getData(treeSelect.id);
-			dispatch.admin.updateUserInfo();
+			dispatch.admin.flushAdminRoleMenuPowers();
 			message.success("删除成功");
 		} else {
 			message.error(res?.msg ?? "操作失败");

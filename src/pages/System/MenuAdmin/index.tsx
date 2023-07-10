@@ -182,7 +182,7 @@ function MenuAdminContainer() {
 						message.success("添加成功");
 						getData();
 						onClose();
-						dispatch.admin.updateUserInfo();
+						dispatch.admin.getAdminRoleMenuPowers();
 					} else {
 						message.error("添加失败:" + res?.msg);
 					}
@@ -199,7 +199,7 @@ function MenuAdminContainer() {
 						message.success("修改成功");
 						getData();
 						onClose();
-						dispatch.admin.updateUserInfo();
+						dispatch.admin.flushAdminRoleMenuPowers();
 					} else {
 						message.error("修改失败");
 					}
@@ -220,7 +220,7 @@ function MenuAdminContainer() {
 		const res = await dispatch.sys.delMenu(params);
 		if (res && res.code === 200) {
 			getData();
-			dispatch.admin.updateUserInfo();
+			dispatch.admin.getAdminRoleMenuPowers();
 			message.success("删除成功");
 		} else {
 			message.error(res?.msg ?? "操作失败");

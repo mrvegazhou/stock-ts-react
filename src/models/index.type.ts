@@ -114,7 +114,7 @@ export type Page = {
 };
 
 // 模态框打开的类型 see查看，add添加，up修改
-export type OperateType = "see" | "add" | "up";
+export type OperateType = "see" | "add" | "up" | "reply";
 
 // 接口的返回值类型
 export type Res =
@@ -134,6 +134,12 @@ export interface SysState {
 	menus: Menu[];
 	roles: Role[];
 	powerTreeData: PowerTree[];
+}
+
+export interface AdminRoleMenuPowers {
+	menus: Menu[];
+	roles: Role[];
+	powers: Power[];
 }
 
 // 添加修改用户时参数的数据类型
@@ -167,6 +173,53 @@ export interface AppImgs {
 	tags: string;
 	url: string;
 	type: number;
+	create_time: string;
+	update_time: string;
+}
+
+// 反馈
+export interface AppFeedback {
+	uuid: number;
+	type: string;
+	content: string;
+	contact: string;
+	imgs: string;
+	user: string;
+	user_id: number | null;
+	create_time: string;
+}
+
+export interface AppFeedbackReply {
+	content: string;
+	reply_user: string;
+	to_user: string;
+	create_time: string;
+}
+
+// 回复反馈
+export interface AppFeedbackReply {
+	uuid: number;
+	content: string;
+	to_user_id: number;
+	reply_user_id: number;
+	feedback_id: number;
+	create_time: string;
+}
+
+// 搜索日志
+export interface AppSearchLog {
+	uuid: number;
+	content: string;
+	user_id: number;
+	create_time: string;
+}
+
+// 广告列表
+export interface AppAdList {
+	uuid: number;
+	type: number;
+	url: string;
+	content: string;
 	create_time: string;
 	update_time: string;
 }
