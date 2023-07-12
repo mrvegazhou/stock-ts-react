@@ -80,6 +80,7 @@ export default function HeaderCom(props: Props): JSX.Element {
 			key: "Resource",
 			children: [
 				{ label: "图片管理", key: "imgs" },
+				{ label: "图片库管理", key: "imgLib" },
 				{ label: "广告管理", key: "adList" },
 				{ label: "搜索日志管理", key: "searchLog" },
 			],

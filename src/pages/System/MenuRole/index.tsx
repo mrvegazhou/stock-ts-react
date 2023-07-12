@@ -187,6 +187,7 @@ function MenuRoleContainer() {
 		const res: Res = await dispatch.sys.upMenuRoles(params);
 		if (res && res.code === 200) {
 			message.success(res.data);
+			dispatch.admin.flushAdminRoleMenuPowers();
 		} else {
 			message.error("操作失败");
 		}

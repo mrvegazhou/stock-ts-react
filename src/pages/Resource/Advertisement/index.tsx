@@ -72,7 +72,7 @@ function AdvertisementContainer() {
 
 	// 分页查询
 	const onGetData = async (page: { page_num: number; page_size: number }): Promise<void> => {
-		if (!powers.includes("appAdvertisement:query")) {
+		if (!powers.includes("appAd:query")) {
 			return;
 		}
 		const params = {
@@ -169,14 +169,14 @@ function AdvertisementContainer() {
 					<ul className="search-ul">
 						<li>
 							<Input
-								style={{ width: "300px" }}
+								style={{ width: "250px" }}
 								placeholder="请输入广告内容"
 								onChange={searchContentChange}
 								value={searchInfo.content}
 							/>
 						</li>
 						<li>
-							<Input placeholder="请输入广告链接" onChange={searchUrlChange} value={searchInfo.url} />
+							<Input style={{ width: "250px" }} placeholder="请输入广告链接" onChange={searchUrlChange} value={searchInfo.url} />
 						</li>
 						<li>
 							<Select

@@ -177,6 +177,16 @@ export interface AppImgs {
 	update_time: string;
 }
 
+// 图片库资源
+export interface AppImgLibrary {
+	uuid: number; // ID
+	tags: string;
+	url: string;
+	note: string;
+	create_time: string;
+	update_time: string;
+}
+
 // 反馈
 export interface AppFeedback {
 	uuid: number;

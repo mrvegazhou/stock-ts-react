@@ -221,7 +221,7 @@ function PowerAdminContainer() {
 						message.success("添加成功");
 						getData(treeSelect.id);
 						onClose();
-						let powersParam: any = { role_ids: rolesCheckboxChose, menu_id: treeSelect.id, power_id: params.uuid };
+						let powersParam: any = { role_ids: rolesCheckboxChose, menu_id: treeSelect.id, power_id: res.data };
 						await dispatch.sys.setPowersByRoleIds(powersParam);
 
 						dispatch.admin.flushAdminRoleMenuPowers();

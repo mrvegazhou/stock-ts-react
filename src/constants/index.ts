@@ -12,9 +12,10 @@ export const tabKeyRouterMap: { [x: string]: string } = {
 	appuser: "/admin/sys/appUserList",
 	resource: "/admin/sys/resource",
 	imgs: "/admin/sys/imgs",
+	imgLib: "/admin/sys/imgLib",
 	searchLog: "/admin/sys/getSearchLogList",
 	appfeedback: "/admin/sys/getFeedbackList",
-	adList: "/admin/sys/getAdList",
+	adList: "/admin/sys/adList",
 };
 
 export class URL {
@@ -65,11 +66,19 @@ export class URL {
 	public static readonly APP_DEL_IMG = `${URL.BASE}delImg`;
 	public static readonly APP_IMGS_URL = `${appBaseUrl}/static/page/img`;
 
+	//图片库资源管理
+	public static readonly APP_IMG_LIB = `${URL.BASE}getAppImgLib`;
+	public static readonly APP_UPDATE_IMG_LIB = `${URL.BASE}updateImgLib`;
+	public static readonly APP_DEL_IMG_LIB = `${URL.BASE}delImgLib`;
+
 	//反馈管理
 	public static readonly APP_FEEDBACKS = `${URL.BASE}getFeedbackList`;
 	public static readonly APP_DEL_FEEDBACK = `${URL.BASE}delFeedback`;
 	public static readonly APP_REPLY_FEEDBACK = `${URL.BASE}replyFeedback`;
 	public static readonly APP_REPLY_FEEDBACK_LIST = `${URL.BASE}replyFeedbackList`;
+
+	//广告列表
+	public static readonly APP_AD = `${URL.BASE}getAdList`;
 
 	//搜索日志管理
 	public static readonly APP_SEARCH_LOG_LIST = `${URL.BASE}getSearchLogList`;

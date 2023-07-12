@@ -182,7 +182,7 @@ function MenuAdminContainer() {
 						message.success("添加成功");
 						getData();
 						onClose();
-						dispatch.admin.getAdminRoleMenuPowers();
+						dispatch.admin.flushAdminRoleMenuPowers();
 					} else {
 						message.error("添加失败:" + res?.msg);
 					}

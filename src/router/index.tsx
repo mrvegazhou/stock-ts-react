@@ -77,9 +77,10 @@ function RouterCom(): JSX.Element {
 					<Route path="menurole" element={lazyLoad(lazy(() => import(`@/pages/System/MenuRole`)))} />
 					<Route path="appUserList" element={lazyLoad(lazy(() => import(`@/pages/User/UserList`)))} />
 					<Route path="getFeedbackList" element={lazyLoad(lazy(() => import(`@/pages/User/FeedbackList`)))} />
-					<Route path="getAdList" element={lazyLoad(lazy(() => import(`@/pages/Resource/Advertisement`)))} />
+					<Route path="adList" element={lazyLoad(lazy(() => import(`@/pages/Resource/Advertisement`)))} />
 					<Route path="getSearchLogList" element={lazyLoad(lazy(() => import(`@/pages/Resource/SearchLogList`)))} />
 					<Route path="imgs" element={lazyLoad(lazy(() => import(`@/pages/Resource/ImgsList`)))} />
+					<Route path="imgLib" element={lazyLoad(lazy(() => import(`@/pages/Resource/ImgLibraryList`)))} />
 					<Route path="nopower" element={lazyLoad(lazy(() => import(`@/pages/ErrorPages/401`)))} />
 					<Route path="*" element={lazyLoad(lazy(() => import(`@/pages/ErrorPages/404`)))} />
 				</Route>

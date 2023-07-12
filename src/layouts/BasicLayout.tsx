@@ -58,7 +58,6 @@ const BasicLayoutCom = () => {
 			} else if (sessionStorage.getItem("userinfo")) {
 				menus = JSON.parse(tools.uncompile(sessionStorage.getItem("userinfo") || "[]")).menus;
 			}
-			console.log(menus, "----menus---")
 			const m: string[] = menus.map((item) => item.url); // 当前用户拥有的所有菜单
 			if (m.includes(pathname)) {
 				return true;
